@@ -1,11 +1,14 @@
+{{-- Bu component, tek bir chirp'i "chirp" prop'u olarak dışarıdan alır --}}
 @props(['chirp'])
 
 <div class="card bg-base-100 shadow">
     <div class="card-body">
         <div class="flex space-x-3">
+            {{-- Chirp'in bir sahibi (user) varsa gerçek avatar, yoksa anonim avatar göster --}}
             @if($chirp->user)
                 <div class="avatar">
                     <div class="size-10 rounded-full">
+                        {{-- Kullanıcının email'i URL-güvenli hale getirilip avatar servisine gönderiliyor --}}
                         <img src="https://avatars.laravel.cloud/{{ urlencode($chirp->user->email) }}"
                              alt="{{ $chirp->user->name }}'s avatar"
                              class="rounded-full" />
@@ -14,6 +17,7 @@
             @else
                 <div class="avatar placeholder">
                     <div class="size-10 rounded-full">
+                        {{-- Sabit, anonim kullanıcılar için varsayılan avatar --}}
                         <img src="https://avatars.laravel.cloud/f61123d5-0b27-434c-a4ae-c653c7fc9ed6?vibe=stealth"
                              alt="Anonymous User"
                              class="rounded-full" />
@@ -23,8 +27,10 @@
 
             <div class="min-w-0">
                 <div class="flex items-center gap-1">
+                    {{-- Kullanıcı adı varsa göster, yoksa "Anonymous" yaz --}}
                     <span class="text-sm font-semibold">{{ $chirp->user ? $chirp->user->name : 'Anonymous' }}</span>
                     <span class="text-base-content/60">·</span>
+                    {{-- Carbon'un diffForHumans() metodu: "5 dakika önce" gibi okunabilir zaman üretir --}}
                     <span class="text-sm text-base-content/60">{{ $chirp->created_at->diffForHumans() }}</span>
                 </div>
                 {{-- Not: Ders dokümanında <p> etiketi var ama videoda eğitmen
