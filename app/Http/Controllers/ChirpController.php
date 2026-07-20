@@ -30,12 +30,28 @@ class ChirpController extends Controller
         //
     }
 
-    /**
+    /** 
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // Gelen veriyi doğrula; kurallar sağlanmazsa Laravel otomatik geri yönlendirir
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ], [
+            // Özelleştirilmiş, markaya uygun hata mesajları
+            'message.required' => 'Please write something to chirp!',
+            'message.max' => 'Chirps must be 255 characters or less.',
+        ]);
+
+        // $fillable sayesinde sadece message alınıyor, user_id kod içinde elle veriliyor
+        \App\Models\Chirp::create([
+            'message' => $validated['message'],
+            'user_id' => null, // 11. derste gerçek kullanıcıyla değiştirilecek
+        ]);
+
+        // Ana sayfaya geri dön, session'a geçici bir başarı mesajı bırak
+        return redirect('/')->with('success', 'Your chirp has been posted!');
     }
 
     /**

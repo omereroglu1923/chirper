@@ -26,7 +26,13 @@
             <a href="#" class="btn btn-primary btn-sm">Sign Up</a>
         </div>
     </nav>
-
+    @if (session('success'))
+        <div class="toast toast-top toast-center">
+            <div class="alert alert-success animate-fade-out">
+                <span>{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
     <main class="flex-1 container mx-auto px-4 py-8">
         {{-- Bu layout'u kullanan sayfanın (örn. home.blade.php) tüm içeriği buraya girer --}}
         {{ $slot }}
