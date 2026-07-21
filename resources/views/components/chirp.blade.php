@@ -5,13 +5,12 @@
     <div class="card-body">
         <div class="flex space-x-3">
             {{-- Chirp'in bir sahibi (user) varsa gerçek avatar, yoksa anonim avatar göster --}}
-            @if($chirp->user)
+            @if ($chirp->user)
                 <div class="avatar">
                     <div class="size-10 rounded-full">
                         {{-- Kullanıcının email'i URL-güvenli hale getirilip avatar servisine gönderiliyor --}}
                         <img src="https://avatars.laravel.cloud/{{ urlencode($chirp->user->email) }}"
-                             alt="{{ $chirp->user->name }}'s avatar"
-                             class="rounded-full" />
+                            alt="{{ $chirp->user->name }}'s avatar" class="rounded-full" />
                     </div>
                 </div>
             @else
@@ -19,12 +18,15 @@
                     <div class="size-10 rounded-full">
                         {{-- Sabit, anonim kullanıcılar için varsayılan avatar --}}
                         <img src="https://avatars.laravel.cloud/f61123d5-0b27-434c-a4ae-c653c7fc9ed6?vibe=stealth"
-                             alt="Anonymous User"
-                             class="rounded-full" />
+                            alt="Anonymous User" class="rounded-full" />
                     </div>
                 </div>
             @endif
-
+            <span class="text-sm text-base-content/60">{{ $chirp->created_at->diffForHumans() }}</span>
+            @if ($chirp->updated_at->gt($chirp->created_at->addSeconds(5)))
+                <span class="text-base-content/60">·</span>
+                <span class="text-sm text-base-content/60 italic">edited</span>
+            @endif
             <div class="min-w-0">
                 <div class="flex items-center gap-1">
                     {{-- Kullanıcı adı varsa göster, yoksa "Anonymous" yaz --}}
@@ -36,6 +38,21 @@
                 {{-- Not: Ders dokümanında <p> etiketi var ama videoda eğitmen
                      fazladan boşluk sorunu yüzünden bunu <span> ile değiştiriyor --}}
                 <span class="mt-1 block">{{ $chirp->message }}</span>
+            </div>
+            {{-- chirp.blade.php içine eklenen edit/delete butonları --}}
+            <div class="flex gap-1">
+                {{-- Belirli bir chirp'in edit sayfasına, ID'siyle birlikte yönlendirir --}}
+                <a href="/chirps/{{ $chirp->id }}/edit" class="btn btn-ghost btn-xs">Edit</a>
+
+                {{-- HTML formu POST gönderiyor ama @method('DELETE') Laravel'e "aslında DELETE" diyor --}}
+                <form method="POST" action="/chirps/{{ $chirp->id }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this chirp?')"
+                        class="btn btn-ghost btn-xs text-error">
+                        Delete
+                    </button>
+                </form>
             </div>
         </div>
     </div>
