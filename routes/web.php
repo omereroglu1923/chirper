@@ -3,9 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\Auth\Register;
+use App\Http\Controllers\Auth\Login;
+use App\Http\Controllers\Auth\Logout;
 
 // Ana sayfa: herkese açık, giriş şartı yok
 Route::get('/', [ChirpController::class, 'index']);
+
+Route::view('/login', 'auth.login')
+    ->middleware('guest')
+    ->name('login'); // Laravel'in auth middleware'i bu ismi otomatik arıyor
+
+Route::post('/login', Login::class)->middleware('guest');
+
+Route::post('/logout', Logout::class)
+    ->middleware('auth')
+    ->name('logout');
 
 // guest middleware: sadece giriş yapmamış kişiler görebilir
 Route::view('/register', 'auth.register')
