@@ -22,7 +22,6 @@
                     </div>
                 </div>
             @endif
-            <span class="text-sm text-base-content/60">{{ $chirp->created_at->diffForHumans() }}</span>
             @if ($chirp->updated_at->gt($chirp->created_at->addSeconds(5)))
                 <span class="text-base-content/60">·</span>
                 <span class="text-sm text-base-content/60 italic">edited</span>
@@ -40,20 +39,19 @@
                 <span class="mt-1 block">{{ $chirp->message }}</span>
             </div>
             {{-- chirp.blade.php içine eklenen edit/delete butonları --}}
-            <div class="flex gap-1">
-                {{-- Belirli bir chirp'in edit sayfasına, ID'siyle birlikte yönlendirir --}}
-                <a href="/chirps/{{ $chirp->id }}/edit" class="btn btn-ghost btn-xs">Edit</a>
-
-                {{-- HTML formu POST gönderiyor ama @method('DELETE') Laravel'e "aslında DELETE" diyor --}}
-                <form method="POST" action="/chirps/{{ $chirp->id }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this chirp?')"
-                        class="btn btn-ghost btn-xs text-error">
-                        Delete
-                    </button>
-                </form>
-            </div>
+            @can('update', $chirp)
+                <div class="flex gap-1">
+                    <a href="/chirps/{{ $chirp->id }}/edit" class="btn btn-ghost btn-xs">Edit</a>
+                    <form method="POST" action="/chirps/{{ $chirp->id }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this chirp?')"
+                            class="btn btn-ghost btn-xs text-error">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            @endcan
         </div>
     </div>
 </div>
