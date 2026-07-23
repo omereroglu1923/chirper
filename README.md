@@ -1,58 +1,49 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Chirper — Laravel Official Bootcamp Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Twitter-like microblogging app built by following Laravel's official ["Getting Started with Laravel"](https://laravel.com/learn/getting-started-with-laravel) bootcamp (13 lessons) — my first guided, end-to-end Laravel project.
 
-## About Laravel
+**Next step in this series:** [`03-blog-crm`](https://github.com/omereroglu1923/03-blog-crm) — the same fundamentals applied independently, without a course, plus new patterns (double `belongsTo` relationships, nested routes, search/filtering, two different authorization models).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## What it does
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- User registration, login, and logout (session-based authentication)
+- Post ("chirp"), edit, and delete short messages
+- Only the author of a chirp can edit or delete it (Laravel Policies)
+- An "edited" indicator that compares `updated_at` against `created_at` — no extra column needed
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## What I learned building this
 
-## Learning Laravel
+- MVC fundamentals in Laravel: routes → controllers → Eloquent models → Blade views
+- Blade's component system (`@props` for data vs. `$slot` for content)
+- Eloquent relationships (`belongsTo`, `hasMany`) and eager loading to avoid N+1 queries
+- Authorization with Policies (`$this->authorize()` in controllers, `@can` in Blade) — and the easy-to-miss requirement that a controller must `use AuthorizesRequests` for `authorize()` to exist at all
+- Full request lifecycle: Route → Middleware → Controller → View
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Laravel 13** (PHP 8.5)
+- **Blade** templates
+- **SQLite**
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Getting started
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/omereroglu1923/02-chirper.git
+cd 02-chirper
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate
+composer run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Visit `http://localhost:8000`.
 
-## Contributing
+## Part of a larger roadmap
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+This is Phase 1 of a self-directed full-stack roadmap (Laravel + DDD → React → React Native). Written notes from the learning process are kept in a private Obsidian vault and will gradually be published as articles.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Personal learning project — not intended as a reusable package or template.
